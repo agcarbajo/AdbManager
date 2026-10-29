@@ -27,9 +27,13 @@ jobs:
         run: |
           echo "ANDROID_HOME=$ANDROID_HOME"
           SDKMANAGER=$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | sort -V | tail -1)
-          "$SDKMANAGER" --install 'platforms;android-36' 'build-tools;36.0.0'
-      - name: Target available Android API
-        run: sed -i 's/compileSdk = 37/compileSdk = 36/' keypointer/app/build.gradle.kts
+          "$SDKMANAGER" --install 'platforms;android-37.0' 'build-tools;36.0.0'
+      - name: Normalize Android 37 SDK folder
+        run: |
+          ls -la "$ANDROID_HOME/platforms"
+          if [ -d "$ANDROID_HOME/platforms/android-37.0" ] && [ ! -e "$ANDROID_HOME/platforms/android-37" ]; then
+            ln -s android-37.0 "$ANDROID_HOME/platforms/android-37"
+          fi
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.3.1'
