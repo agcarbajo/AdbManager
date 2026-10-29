@@ -27,7 +27,9 @@ jobs:
         run: |
           echo "ANDROID_HOME=$ANDROID_HOME"
           SDKMANAGER=$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | sort -V | tail -1)
-          "$SDKMANAGER" --install 'platforms;android-37' 'build-tools;36.0.0'
+          "$SDKMANAGER" --install 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Target available Android API
+        run: sed -i 's/compileSdk = 37/compileSdk = 36/' keypointer/app/build.gradle.kts
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.3.1'
